@@ -1,0 +1,105 @@
+import datetime
+import math
+import calendar
+
+print ("Atur Cara Memaparkan Hari Berdasarkan Tarikh")
+def zeller(d):
+    
+    q = d.day
+    m = d.month
+    Y = d.year
+    
+    if m <= 2:
+        m += 12
+    
+    if d.month <= 2:
+        Y -= 1
+    
+    h = (q + math.floor((13 * (m + 1)) / 5) + Y + math.floor(Y / 4) - math.floor(Y / 100) + math.floor(Y / 400)) % 7
+    
+    return h
+
+zellerdays = ["Sabtu", "Ahad", "Isnin", "Selasa", "Rabu", "Khamis", "Jumaat"]
+
+year = int (input ("Masukkan Tahun: "))
+
+if (year % 4) == 0:
+    if (year % 100) == 0:
+        if (year % 400) == 0:
+            num_month = 2 #tahun lompat
+        else:
+            num_month = 1 #bukan tahun lompat
+    else:
+        num_month = 2 #tahun lompat
+else:
+    num_month = 1 #bukan tahun lompat
+
+
+if num_month == 1:
+    tahun_lompat = 0
+    text = "Bukan Tahun Lompat"
+    list_days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+elif num_month == 2:
+    tahun_lompat = 1
+    text = "Tahun Lompat"
+    list_days = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+
+
+list_bulan = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+month = int (input ("Masukkan Bulan: "))
+while month not in list_bulan:
+    print ("Bulan tiada dalam senarai")
+    month = int (input ("Masukkan Bulan: "))
+
+
+if month in [1, 3, 5, 7, 8, 10, 12]:
+    days_number = 31
+elif month in [4, 6, 9, 11]:
+    days_number = 30
+elif month == 2:
+    if tahun_lompat == 0:
+        days_number = 28
+    else:
+        days_number = 29
+
+
+days = int (input ("Masukkan Hari: "))
+while days <= 0 or days > days_number:
+    print ("\nTarikh tiada dalam senarai")
+    days = int (input ("Masukkan Hari: "))
+
+
+d = datetime.date(year, month, days)
+
+h = zeller(d)
+
+n = calendar.day_name[d.weekday()]
+
+if n == "Saturday":
+    n = "Sabtu"
+elif n == "Sunday":
+    n = "Ahad"
+elif n == "Monday":
+    n = "Isnin"
+elif n == "Tuesday":
+    n = "Selasa"
+elif n == "Wednesday":
+    n = "Rabu"
+elif n == "Thursday":
+    n = "Khamis"
+elif n == "Friday":
+    n = "Jumaat"
+else:
+    print ("Logic Error...")
+    SystemExit()
+
+
+
+print ("\n***********************")
+print ("Tarikh:", d)
+print (text)
+print ("Python:", n)
+print ("Zeller:", zellerdays[h])
+print ("***********************")
+
+
